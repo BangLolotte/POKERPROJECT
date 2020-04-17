@@ -41,6 +41,9 @@ typedef struct joueurs {
     joueur joueur[2];
 }joueurs;
 
+
+
+mainjoueur tiragecarte ;
 /*********************************Prototypes*********************************/
 mainjoueur generatehand();
 void affichermain(mainjoueur);
@@ -78,11 +81,6 @@ mainjoueur generatehand() {
         carte.valeur=generatevalue();
         printf("carte : %c%c\n",carte.valeur,carte.figure);
 
-    carte.figure=generatefigure();
-    carte.valeur=generatevalue();
-
-        mainjoueur main ;
-
 
 
 //printf("Carte : %c%c \n",carte.valeur, carte.figure);
@@ -119,7 +117,7 @@ int main() {
     srand(time(NULL)); //commande random
     generatehand();
 
-    printf("TestBranche, mains en cours");
+    printf("Erreur corrigées");
 
     return 0;
 }
