@@ -54,6 +54,8 @@ char generatevalue ();
 bool is_same_figure(carte*carte1, carte*carte2);
 
 bool is_same_figure(carte*carte1, carte*carte2);
+
+int getrang(carte cartes);
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
     sleep(1);
@@ -101,15 +103,33 @@ bool is_same_figure(carte*carte1, carte*carte2)
 
 }
 
+
 bool is_same_value (carte * carte1, carte * carte2)
 {
 
     return carte1->valeur == carte2->valeur;            //retourne true ou false après avoir comparé les valeurs des cartes
 
 }
+/****************************rang carte************************/
+
+int getrang(carte cartes) {
+
+    int valeur_carte;                               //création variable on l'on rentre la valeur de la carte
+
+    for (int i = 0; i <
+                    13; i++)                          //création d'une boucle for pour scanner les 14 élements présent dans le tableau
+    {
+
+        if (cartes.valeur ==
+            valeurs[i])                    //si le pointeur de la carte est associer à sa bonne valeur dans le tableau
+            valeur_carte = i;                             //la variable valeur_carte prend alors la valeur de la case i du tableau
+
+    }
+
+    return valeur_carte;  //on retourne la variable valeur_carte de type entier
 
 
-
+}
 
 
 int main() {
