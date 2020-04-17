@@ -78,10 +78,10 @@ mainjoueur generatehand() {
         carte.valeur=generatevalue();
         printf("carte : %c%c\n",carte.valeur,carte.figure);
 
-    carte.figure=generatefigure();
-    carte.valeur=generatevalue();
+    carte.figure=generatefigure(); //inutile deja fait plus haut
+    carte.valeur=generatevalue(); //inutile deja fait plus haut
 
-        mainjoueur main ;
+        mainjoueur main ; // ne pas mettre là  =>variable locale en dehors de la boucle
 
 
 
