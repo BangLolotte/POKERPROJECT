@@ -90,7 +90,7 @@ mainjoueur generatehand() {
     }
 
 
-    mainjoueur result;
+    mainjoueur result; //inutile
     return result;
 
 
