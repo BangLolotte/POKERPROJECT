@@ -82,12 +82,12 @@ mainjoueur generatehand() {
         printf("carte : %c%c\n",carte.valeur,carte.figure);
 
 
-//printf("Carte : %c%c \n",carte.valeur, carte.figure);
+
 
     }
 
 
-    mainjoueur result;
+    mainjoueur result; //inutile
     return result;
 
 
