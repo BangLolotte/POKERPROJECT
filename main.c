@@ -119,7 +119,7 @@ int main() {
     srand(time(NULL)); //commande random
     generatehand();
 
-    printf("Test");
+    printf("TestBranche, mains en cours");
 
     return 0;
 }
