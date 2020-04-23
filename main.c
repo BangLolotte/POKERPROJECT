@@ -43,10 +43,12 @@ typedef struct joueurs {
 
 
 
-mainjoueur tiragecarte ;
+
 /*********************************Prototypes*********************************/
 mainjoueur generatehand();
+
 void affichermain(mainjoueur);
+
 char generatefigure();
 
 char generatevalue ();
@@ -72,28 +74,31 @@ char generatefigure() {
 }
 
 
-/*********************************Génération carte***************************************/
+/*********************************Génération carte et mains***************************************/
 mainjoueur generatehand() {
+    mainjoueur tiragecarte ;
 
     for (int i = 0; i <=4; i++) { //Génération d'une carte
 
-        carte carte ;
+        carte cartes;
 
-        carte.figure=generatefigure();
-        carte.valeur=generatevalue();
-        printf("carte : %c%c\n",carte.valeur,carte.figure);
+        cartes.figure = generatefigure();
+        cartes.valeur = generatevalue();
 
-
-
+        tiragecarte.cartes[i]=cartes;
 
     }
-
-
-    mainjoueur result; //inutile
-    return result;
-
+    return tiragecarte;
 
 }
+
+
+    printf("La main du joueur est :");
+    for (int i = 0; i < 5; i++) {
+        printf("%c%c  ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
+    }
+}
+
 /************************************bool**************************/
 
 bool is_same_figure(carte*carte1, carte*carte2)
@@ -116,8 +121,7 @@ int getrang(carte cartes) {
 
     int valeur_carte;                               //création variable on l'on rentre la valeur de la carte
 
-    for (int i = 0; i <
-                    13; i++)                          //création d'une boucle for pour scanner les 14 élements présent dans le tableau
+    for (int i = 0; i < 13; i++)                          //création d'une boucle for pour scanner les 14 élements présent dans le tableau
     {
 
         if (cartes.valeur ==
@@ -132,11 +136,12 @@ int getrang(carte cartes) {
 }
 
 
+
 int main() {
     srand(time(NULL)); //commande random
-    generatehand();
 
-    printf("Erreur corrigées");
+    affichermain(generatehand());
+
 
 
     return 0;
