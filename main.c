@@ -103,10 +103,10 @@ mainjoueur generatehand() {
 
 }
 
-
+void affichermain(mainjoueur tiragecarte) {
     printf("La main du joueur est : ");
-    for (int i = 0; i < 5; i++) {
-        printf("%c%c  ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
+        for (int i = 0; i < 5; i++) {
+        printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
     }
 }
 
