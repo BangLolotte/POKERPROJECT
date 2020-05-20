@@ -58,6 +58,17 @@ bool is_same_figure(carte*carte1, carte*carte2);
 bool is_same_figure(carte*carte1, carte*carte2);
 
 int getrang(carte cartes);
+
+score is_straight_flush(mainjoueur *);
+score is_four_of_king(mainjoueur *);
+score is_full_house(mainjoueur *);
+score is_flush(mainjoueur *);
+score is_straight(mainjoueur *);
+score is_three_of_kind(mainjoueur);
+score is_two_pair(mainjoueur*);
+score is_pair(mainjoueur *);
+score is_highcard(mainjoueur *);
+
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
     sleep(1);
@@ -93,7 +104,7 @@ mainjoueur generatehand() {
 }
 
 
-    printf("La main du joueur est :");
+    printf("La main du joueur est : ");
     for (int i = 0; i < 5; i++) {
         printf("%c%c  ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
     }
@@ -104,7 +115,7 @@ mainjoueur generatehand() {
 bool is_same_figure(carte*carte1, carte*carte2)
 {
 
-    return carte1->figure == carte2->figure;            //retourne true ou false après avoir comparé les figues des cartes
+    return carte1->figure == carte2->figure;            //retourne true ou false après avoir comparé les figures des cartes
 
 }
 
@@ -134,6 +145,8 @@ int getrang(carte cartes) {
 
 
 }
+
+/**************************Combinaisons*********************/
 
 
 
