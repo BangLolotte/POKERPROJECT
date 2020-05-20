@@ -98,14 +98,11 @@ mainjoueur generatehand() {
 
         tiragecarte.cartes[i]=cartes;
 
-      //  printf("carte : %c%c\n", carte.valeur, carte.figure);
-
     }
     return tiragecarte;
 
 }
 
-void affichermain(mainjoueur tiragecarte) {
 
     printf("La main du joueur est : ");
     for (int i = 0; i < 5; i++) {
