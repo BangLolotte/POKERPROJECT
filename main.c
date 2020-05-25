@@ -132,7 +132,10 @@ mainjoueur generatehand() {
 
         tiragecarte.cartes[i]=cartes;
 
-        testdoublons();
+        if (testdoublons(&cartes)){
+            printf("Doublon");
+            i--;
+        }
 
         }
 
