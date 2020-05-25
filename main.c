@@ -27,7 +27,7 @@ typedef struct score {
     char type[255];
     int score;
 }score;
-
+score resultat;
 
 typedef struct joueur {
     int numero;
@@ -59,15 +59,15 @@ bool is_same_figure(carte*carte1, carte*carte2);
 
 int getrang(carte cartes);
 
-score is_straight_flush(mainjoueur *);
-score is_four_of_king(mainjoueur *);
-score is_full_house(mainjoueur *);
-score is_flush(mainjoueur *);
-score is_straight(mainjoueur *);
-score is_three_of_kind(mainjoueur);
-score is_two_pair(mainjoueur*);
-score is_pair(mainjoueur *);
-score is_highcard(mainjoueur *);
+score is_straight_flush(mainjoueur *); // suite combinée à une couleur, sans l'As comme plus haute carte (si 2 straight flush, le joueur qui a la carte la plus haute de la suite wins), score : 150
+score is_four_of_king(mainjoueur *); // quatre cartes d'un même valeur - score : 120
+score is_full_house(mainjoueur *); // brelan + paire - score : 100
+score is_flush(mainjoueur *); // cinq cartes de même figure (mais /!\ a ce que ce soit du même sigle) --> 5 trefle OU 5 coeur OU etc.. - score : 90
+score is_straight(mainjoueur *); // cinq cartes consécutives (qui se suivent numériquement) - score : 70
+score is_three_of_kind(mainjoueur *); // trois cartes de la même valeur (brelan) - score : 50
+score is_two_pair(mainjoueur*); // deux paires - score : 40
+score is_pair(mainjoueur *); // une seule paire - score : 20
+score is_highcard(mainjoueur *); // carte la plus haute - score : 10
 
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
@@ -98,16 +98,17 @@ mainjoueur generatehand() {
 
         tiragecarte.cartes[i]=cartes;
 
+
     }
     return tiragecarte;
 
 }
 
 void affichermain(mainjoueur tiragecarte) {
-    printf("La main du joueur est : ");
+        printf("La main du joueur est : ");
         for (int i = 0; i < 5; i++) {
-        printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
-    }
+            printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
+        }
 }
 
 /************************************bool**************************/
@@ -146,7 +147,24 @@ int getrang(carte cartes) {
 
 }
 
+
+
 /**************************Combinaisons*********************/
+score is_pair(mainjoueur *tiragecarte) {
+
+    score paire;
+    for (int i = 0; i <5 ; i++) {
+        for (int j = 0; j <5 ; j++) {
+            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){
+                strcpy(resultat.score, "UNE PAIRE");
+                resultat.score = 20 ;
+            }
+        }
+    }
+
+
+    return resultat;
+}
 
 
 
