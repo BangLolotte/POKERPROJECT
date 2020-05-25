@@ -49,6 +49,8 @@ mainjoueur generatehand();
 
 void affichermain(mainjoueur);
 
+bool testdoublons(carte*cartes);
+
 char generatefigure();
 
 char generatevalue ();
@@ -67,7 +69,7 @@ score is_straight(mainjoueur *); // cinq cartes consécutives (qui se suivent nu
 score is_three_of_kind(mainjoueur *); // trois cartes de la même valeur (brelan) - score : 50
 score is_two_pair(mainjoueur*); // deux paires - score : 40
 score is_pair(mainjoueur *); // une seule paire - score : 20
-score is_highcard(mainjoueur *); // carte la plus haute - score : 10
+score is_highcard(mainjoueur *); // absence de mains - score : 0
 
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
@@ -83,34 +85,6 @@ char generatefigure() {
 
     return figures[nb2];
 }
-
-
-/*********************************Génération carte et mains***************************************/
-mainjoueur generatehand() {
-    mainjoueur tiragecarte ;
-
-    for (int i = 0; i <=4; i++) { //Génération d'une carte
-
-        carte cartes;
-
-        cartes.figure = generatefigure();
-        cartes.valeur = generatevalue();
-
-        tiragecarte.cartes[i]=cartes;
-
-
-    }
-    return tiragecarte;
-
-}
-
-void affichermain(mainjoueur tiragecarte) {
-        printf("La main du joueur est : ");
-        for (int i = 0; i < 5; i++) {
-            printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
-        }
-}
-
 /************************************bool**************************/
 
 bool is_same_figure(carte*carte1, carte*carte2)
@@ -127,6 +101,54 @@ bool is_same_value (carte * carte1, carte * carte2)
     return carte1->valeur == carte2->valeur;            //retourne true ou false après avoir comparé les valeurs des cartes
 
 }
+bool testdoublons(carte*cartes) {
+
+    mainjoueur tiragecarte;
+int cpt;
+    is_same_value(cartes,cartes);
+    is_same_figure(cartes,cartes);
+
+    for (int i = 0; i < 5; i++) {
+        if ((is_same_figure(cartes, &tiragecarte.cartes[i])) && (is_same_value(cartes, &tiragecarte.cartes[i]))) {
+            cpt ++;
+        }
+            if (cpt==2) {
+                return true;
+            }
+    }
+}
+
+
+/*********************************Génération carte et mains***************************************/
+mainjoueur generatehand() {
+    mainjoueur tiragecarte ;
+
+    for (int i = 0; i <=4; i++) { //Génération d'une carte
+
+        carte cartes;
+
+        cartes.figure = generatefigure();
+        cartes.valeur = generatevalue();
+
+        tiragecarte.cartes[i]=cartes;
+
+        testdoublons();
+
+        }
+
+    return tiragecarte;
+    }
+
+
+
+void affichermain(mainjoueur tiragecarte) {
+        printf("/nLa main du joueur est : ");
+        for (int i = 0; i < 5; i++) {
+            printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
+        }
+}
+
+
 /****************************rang carte************************/
 
 int getrang(carte cartes) {
@@ -137,7 +159,7 @@ int getrang(carte cartes) {
     {
 
         if (cartes.valeur ==
-            valeurs[i])                    //si le pointeur de la carte est associer à sa bonne valeur dans le tableau
+            valeurs[i])                    //si le pointeur de la carte est associé à sa bonne valeur dans le tableau
             valeur_carte = i;                             //la variable valeur_carte prend alors la valeur de la case i du tableau
 
     }
@@ -158,6 +180,7 @@ score is_pair(mainjoueur *tiragecarte) {
             if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){
                 strcpy(resultat.score, "UNE PAIRE");
                 resultat.score = 20 ;
+
             }
         }
     }
@@ -171,7 +194,10 @@ score is_pair(mainjoueur *tiragecarte) {
 int main() {
     srand(time(NULL)); //commande random
 
-    affichermain(generatehand());
+    for (int i = 0; i <10 ; i++) {
+        affichermain(generatehand());
+    }
+
 
 
 
