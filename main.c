@@ -146,11 +146,11 @@ mainjoueur generatehand() {
 mainjoueur tri(mainjoueur tiragecarte) {
     carte temporisation;
     for (int i = 0; i < 5; i++) {
-        for (int j = i+1; j < 5; j++) {
-            if (getrang(tiragecarte.cartes[i] ) < getrang(tiragecarte.cartes[j])) {
-                temporisation = tiragecarte.cartes[j];
-                tiragecarte.cartes[j] = tiragecarte.cartes[i];
-                tiragecarte.cartes[i] = temporisation;
+        for (int j = i + 1; j < 5; j++) {
+            if (getrang(tiragecarte.cartes[i]) < getrang(tiragecarte.cartes[j])) {
+                temporisation = tiragecarte.cartes[i];
+                tiragecarte.cartes[i] = tiragecarte.cartes[j];
+                tiragecarte.cartes[j] = temporisation;
             }
         }
     }
@@ -205,6 +205,19 @@ affichermain((tri(*tiragecarte)));
     return resultat;
 }
 
+score is_straight(mainjoueur *tiragecarte) {
+    affichermain((tri(*tiragecarte)));
+    score suite;
+    for (int i = 0; i <4 ; i++) {
+        if (tiragecarte->cartes[i].valeur == 1+getrang(tiragecarte->cartes[i+1])&& 1+getrang(tiragecarte->cartes[i+2]) && 1+getrang(tiragecarte->cartes[i+3]))
+            printf("%c", tiragecarte->cartes[i].valeur);
+
+        strcpy(resultat.score, "UNE SUITE");
+        resultat.score = 70 ;
+    }
+
+    return resultat;
+}
 
 
 int main() {
