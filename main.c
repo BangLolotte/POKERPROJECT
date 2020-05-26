@@ -61,6 +61,8 @@ bool is_same_figure(carte*carte1, carte*carte2);
 
 int getrang(carte cartes);
 
+mainjoueur tri(mainjoueur tiragecarte);
+
 score is_straight_flush(mainjoueur *); // suite combinée à une couleur, sans l'As comme plus haute carte (si 2 straight flush, le joueur qui a la carte la plus haute de la suite wins), score : 150
 score is_four_of_king(mainjoueur *); // quatre cartes d'un même valeur - score : 120
 score is_full_house(mainjoueur *); // brelan + paire - score : 100
@@ -139,14 +141,29 @@ mainjoueur generatehand() {
     }
 
 
+/**************************Tri de la main du joueur************************/
+
+mainjoueur tri(mainjoueur tiragecarte) {
+    carte temporisation;
+    for (int i = 0; i < 5; i++) {
+        for (int j = i+1; j < 5; j++) {
+            if (getrang(tiragecarte.cartes[i] ) < getrang(tiragecarte.cartes[j])) {
+                temporisation = tiragecarte.cartes[j];
+                tiragecarte.cartes[j] = tiragecarte.cartes[i];
+                tiragecarte.cartes[i] = temporisation;
+            }
+        }
+    }
+    return tiragecarte;
+}
+/****************affichage de la main*****************/
 
 void affichermain(mainjoueur tiragecarte) {
-        printf("La main du joueur est : ");
+        printf("\nLa main du joueur est : ");
         for (int i = 0; i < 5; i++) {
             printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
         }
 }
-
 
 /****************************rang carte************************/
 
@@ -172,7 +189,7 @@ int getrang(carte cartes) {
 
 /**************************Combinaisons*********************/
 score is_pair(mainjoueur *tiragecarte) {
-
+affichermain((tri(*tiragecarte)));
     score paire;
     for (int i = 0; i <5 ; i++) {
         for (int j = 0; j <5 ; j++) {
@@ -214,10 +231,12 @@ int main() {
     unsigned long seed = clock()+time(NULL)+getpid();
     srand(seed); //commande random
 
-    for (int i = 0; i <5 ; i++) {
+    //for (int i = 0; i <5 ; i++) {
         affichermain(generatehand());
-    }
-
+   // }
+   mainjoueur main = generatehand();
+   affichermain(main);
+   is_pair(&main);
 
 
 
