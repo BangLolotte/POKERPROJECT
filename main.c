@@ -49,7 +49,7 @@ mainjoueur generatehand();
 
 void affichermain(mainjoueur);
 
-bool testdoublons(carte*cartes);
+bool testdoublons(carte*cartes, mainjoueur*tiragecarte);
 
 char generatefigure();
 
@@ -73,14 +73,12 @@ score is_highcard(mainjoueur *); // absence de mains - score : 0
 
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
-    sleep(1);
     int nb1= rand() %13;
 
     return valeurs[nb1];
 }
 
 char generatefigure() {
-    sleep(1);
     int nb2 = rand() %4;
 
     return figures[nb2];
@@ -101,21 +99,20 @@ bool is_same_value (carte * carte1, carte * carte2)
     return carte1->valeur == carte2->valeur;            //retourne true ou false après avoir comparé les valeurs des cartes
 
 }
-bool testdoublons(carte*cartes) {
+bool testdoublons(carte*cartes, mainjoueur*tiragecarte) {
 
-    mainjoueur tiragecarte;
-int cpt;
-    is_same_value(cartes,cartes);
-    is_same_figure(cartes,cartes);
+
+int cpt=0;
 
     for (int i = 0; i < 5; i++) {
-        if ((is_same_figure(cartes, &tiragecarte.cartes[i])) && (is_same_value(cartes, &tiragecarte.cartes[i]))) {
+        if ((is_same_figure(cartes, &tiragecarte->cartes[i])) && (is_same_value(cartes, &tiragecarte->cartes[i]))) {
             cpt ++;
         }
             if (cpt==2) {
                 return true;
             }
     }
+    return false;
 }
 
 
@@ -132,8 +129,7 @@ mainjoueur generatehand() {
 
         tiragecarte.cartes[i]=cartes;
 
-        if (testdoublons(&cartes)){
-            printf("Doublon");
+        if (testdoublons(&cartes, &tiragecarte)){ // appel de la fonction doublon puis correction sur la main
             i--;
         }
 
@@ -145,7 +141,7 @@ mainjoueur generatehand() {
 
 
 void affichermain(mainjoueur tiragecarte) {
-        printf("/nLa main du joueur est : ");
+        printf("La main du joueur est : ");
         for (int i = 0; i < 5; i++) {
             printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
         }
@@ -195,9 +191,10 @@ score is_pair(mainjoueur *tiragecarte) {
 
 
 int main() {
-    srand(time(NULL)); //commande random
+    unsigned long seed = clock()+time(NULL)+getpid();
+    srand(seed); //commande random
 
-    for (int i = 0; i <10 ; i++) {
+    for (int i = 0; i <5 ; i++) {
         affichermain(generatehand());
     }
 
