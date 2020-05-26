@@ -4,6 +4,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <gmpxx.h>
+
 /****************************Valeurs**************************/
 
 char valeurs[]={'A','K','Q','J','T','9','8','7','6','5','4','3','2'};
@@ -157,6 +159,7 @@ score is_pair(mainjoueur *tiragecarte) {
         for (int j = 0; j <5 ; j++) {
             if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){
                 strcpy(resultat.score, "UNE PAIRE");
+                printf("une paire");
                 resultat.score = 20 ;
             }
         }
@@ -166,14 +169,47 @@ score is_pair(mainjoueur *tiragecarte) {
     return resultat;
 }
 
+score is_two_pair(mainjoueur *tiragecarte) {
+
+    score twopair;
+    for (int i=0; i <5 ; i++) {
+        for (int j=0; j <5 ; j++) {
+            for (int k=0; k <5; k++) {
+                if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur && tiragecarte->cartes[k].valeur == tiragecarte->cartes[k+1].valeur) {
+                    strcpy(resultat.score, "DEUX PAIRE");
+                    printf("deux paire");
+                    resultat.score=40;
+                }
+            }
+
+        }
+
+    }
+
+}
+
+score is_highcard(mainjoueur *tiragecarte) {
+    score highcard;
+    carte cartes;
+    for (int i=0; i<5; i++){
+
+        printf("La carte la plus fort est :", tiragecarte.cartes[i] == carte.valeur[1]);
+    }
+
+
+
+
+
+}
 
 
 int main() {
     srand(time(NULL)); //commande random
-
     affichermain(generatehand());
-
+    score pair;
+    score is_pair;
 
 
     return 0;
 }
+
