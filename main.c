@@ -311,6 +311,26 @@ score is_straight_flush(mainjoueur *tiragecarte) {
     return resultat;
 }
 
+score is_flush(mainjoueur *tiragecarte) {
+
+    score flush;
+    for (int i=0; i<5 ; i++) {
+        for (int j=0; j<5 ; j++) {
+            if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
+              strcpy(resultat.score, "UN FLUSH");
+              resultat.score = 90;
+            }
+
+
+        }
+
+
+    }
+
+    return resultat;
+}
+
+
 
 void comparermain(joueurs *mainjoueur) {
 is_straight_flush(mainjoueur *tiragecarte)
