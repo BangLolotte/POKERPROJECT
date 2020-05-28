@@ -65,8 +65,8 @@ mainjoueur tri(mainjoueur tiragecarte);
 
 score is_straight_flush(mainjoueur *); // suite combinée à une couleur, sans l'As comme plus haute carte (si 2 straight flush, le joueur qui a la carte la plus haute de la suite wins), score : 150
 score is_four_of_king(mainjoueur *); // quatre cartes d'un même valeur - score : 120
-score is_full_house(mainjoueur *); // brelan + paire - score : 100
-score is_flush(mainjoueur *); // cinq cartes de même figure (mais /!\ a ce que ce soit du même sigle) --> 5 trefle OU 5 coeur OU etc.. - score : 90
+score is_full_house(mainjoueur *); // brelan + paire - score : 90
+score is_flush(mainjoueur *); // cinq cartes de même figure (mais /!\ a ce que ce soit du même sigle) --> 5 trefle OU 5 coeur OU etc.. - score : 80
 score is_straight(mainjoueur *); // cinq cartes consécutives (qui se suivent numériquement) - score : 70
 score is_three_of_kind(mainjoueur *); // trois cartes de la même valeur (brelan) - score : 50
 score is_two_pair(mainjoueur*); // deux paires - score : 40
@@ -188,13 +188,15 @@ int getrang(carte cartes) {
 
 
 /**************************Combinaisons*********************/
+
 score is_pair(mainjoueur *tiragecarte) {
-affichermain((tri(*tiragecarte)));
+    tri(*tiragecarte);
+
     score paire;
     for (int i = 0; i <5 ; i++) {
-        for (int j = 0; j <5 ; j++) {
-            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){
-                strcpy(resultat.score, "UNE PAIRE");
+        for (int j = 0; j <5 ; j++) {               //analyse la main grâce au tri fait avant
+            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){ //si la valeur de la carte est identique à celle d'après
+                strcpy(resultat.score, "PAIRE");
                 resultat.score = 20 ;
 
             }
@@ -204,18 +206,95 @@ affichermain((tri(*tiragecarte)));
 
     return resultat;
 }
+score is_three_of_kind(mainjoueur *tiragecarte) {
+
+    tri(*tiragecarte);
+    score brelan;
+    for (int i = 0; i < 2; ++i) {
+        if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
+            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur)
+
+            strcpy(resultat.score, "BRELAN");
+        resultat.score = 50;
+        return resultat;
+    }
+}
+
 
 score is_straight(mainjoueur *tiragecarte) {
-    affichermain((tri(*tiragecarte)));
-    score suite;
-    for (int i = 0; i <4 ; i++) {
-        if (tiragecarte->cartes[i].valeur == 1+getrang(tiragecarte->cartes[i+1])&& 1+getrang(tiragecarte->cartes[i+2]) && 1+getrang(tiragecarte->cartes[i+3]))
-            printf("%c", tiragecarte->cartes[i].valeur);
+    tri(*tiragecarte);
 
-        strcpy(resultat.score, "UNE SUITE");
-        resultat.score = 70 ;
+    score suite;
+    int cpt=0;
+    for (int i = 0; i <4 ; i++) {
+        if (tiragecarte->cartes[i].valeur == 1+getrang(tiragecarte->cartes[i+1])) //si la carte = 1+ rang de la carte d'après
+            cpt++; //cpteur s'incrémente
     }
 
+    if(cpt==5) {
+        strcpy(resultat.score, "SUITE");
+        resultat.score = 70;
+    }
+    return resultat;
+}
+
+
+score is_flush(mainjoueur *tiragecarte) {
+    tri(*tiragecarte);
+
+    score flush;
+    for (int i=0; i<5 ; i++) {
+        for (int j=0; j<5 ; j++) {
+            if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure
+            == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
+                strcpy(resultat.score, "FLUSH");
+                resultat.score = 80;
+            }
+
+
+        }
+
+    }
+
+    return resultat;
+}
+
+score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
+    tri(*tiragecarte);
+    score fullhouse;
+
+    if (resultat.score=="BRELAN"&&resultat.score=="DOUBLE PAIRE"){
+
+        strcpy(resultat.score, "FULL HOUSE");
+        resultat.score == 90;
+    }
+
+
+    return resultat;
+}
+
+
+score is_four_of_king(mainjoueur *tiragecarte) {
+    tri(*tiragecarte);
+
+    score carre;
+
+    for (int i = 0; i < 2 ; ++i) {
+        if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
+            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur &&
+            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 3].valeur)
+
+            strcpy(resultat.score, "CARRE");
+            resultat.score = 120;
+
+    }
+
+}
+
+score is_straight_flush(mainjoueur *tiragecarte) {
+    tri(*tiragecarte);
+
+    score straight_flush;
     return resultat;
 }
 
@@ -229,7 +308,7 @@ int main() {
    // }
    mainjoueur main = generatehand();
    affichermain(main);
-   is_pair(&main);
+
 
 
 
