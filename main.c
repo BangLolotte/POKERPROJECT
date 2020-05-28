@@ -73,6 +73,8 @@ score is_two_pair(mainjoueur*); // deux paires - score : 40
 score is_pair(mainjoueur *); // une seule paire - score : 20
 score is_highcard(mainjoueur *); // absence de mains - score : 0
 
+
+void comparermain(joueurs *);
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
     int nb1= rand() %13;
@@ -206,6 +208,17 @@ score is_pair(mainjoueur *tiragecarte) {
 
     return resultat;
 }
+
+score is_two_pair(mainjoueur *tiragecarte) {
+    score deuxpaires;
+
+
+    strcpy(resultat.score, "DOUBLE PAIRE");
+    resultat.score = 40;
+    return resultat;
+}
+
+
 score is_three_of_kind(mainjoueur *tiragecarte) {
 
     tri(*tiragecarte);
@@ -296,6 +309,11 @@ score is_straight_flush(mainjoueur *tiragecarte) {
 
     score straight_flush;
     return resultat;
+}
+
+
+void comparermain(joueurs *mainjoueur) {
+is_straight_flush(mainjoueur *tiragecarte)
 }
 
 
