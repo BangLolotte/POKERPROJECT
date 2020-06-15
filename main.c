@@ -192,7 +192,7 @@ int getrang(carte cartes) {
 /**************************Combinaisons*********************/
 
 score is_pair(mainjoueur *tiragecarte) {
-    tri(*tiragecarte);
+
 
     score paire;
     for (int i = 0; i <5 ; i++) {
@@ -221,7 +221,7 @@ score is_two_pair(mainjoueur *tiragecarte) {
 
 score is_three_of_kind(mainjoueur *tiragecarte) {
 
-    tri(*tiragecarte);
+
     score brelan;
     for (int i = 0; i < 2; ++i) {
         if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
@@ -235,7 +235,7 @@ score is_three_of_kind(mainjoueur *tiragecarte) {
 
 
 score is_straight(mainjoueur *tiragecarte) {
-    tri(*tiragecarte);
+
 
     score suite;
     int cpt=0;
@@ -253,7 +253,7 @@ score is_straight(mainjoueur *tiragecarte) {
 
 
 score is_flush(mainjoueur *tiragecarte) {
-    tri(*tiragecarte);
+
 
     score flush;
     for (int i=0; i<5 ; i++) {
@@ -273,7 +273,7 @@ score is_flush(mainjoueur *tiragecarte) {
 }
 
 score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
-    tri(*tiragecarte);
+
     score fullhouse;
 
     if (resultat.score=="BRELAN"&&resultat.score=="DOUBLE PAIRE"){
@@ -288,7 +288,7 @@ score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la dou
 
 
 score is_four_of_king(mainjoueur *tiragecarte) {
-    tri(*tiragecarte);
+
 
     score carre;
 
@@ -305,7 +305,7 @@ score is_four_of_king(mainjoueur *tiragecarte) {
 }
 
 score is_straight_flush(mainjoueur *tiragecarte) {
-    tri(*tiragecarte);
+
 
     score straight_flush;
     return resultat;
