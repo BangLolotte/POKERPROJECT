@@ -145,18 +145,18 @@ mainjoueur generatehand() {
 
 /**************************Tri de la main du joueur************************/
 
-mainjoueur tri(mainjoueur tiragecarte) {
-    carte temporisation;
-    for (int i = 0; i < 5; i++) {
-        for (int j = i + 1; j < 5; j++) {
-            if (getrang(tiragecarte.cartes[i]) < getrang(tiragecarte.cartes[j])) {
-                temporisation = tiragecarte.cartes[i];
-                tiragecarte.cartes[i] = tiragecarte.cartes[j];
-                tiragecarte.cartes[j] = temporisation;
+mainjoueur tri(mainjoueur tirage) {
+    carte temp1;
+    for (int i = 0; i < 5; ++i) {
+        for (int k = i+1; k < 5; ++k) {
+            if (getrang(tirage.cartes[i]) < getrang(tirage.cartes[k])) {
+                temp1 = tirage.cartes[k];
+                tirage.cartes[k] = tirage.cartes[i];
+                tirage.cartes[i] = temp1;
             }
         }
     }
-    return tiragecarte;
+    return tirage;
 }
 /****************affichage de la main*****************/
 
@@ -311,30 +311,12 @@ score is_straight_flush(mainjoueur *tiragecarte) {
     return resultat;
 }
 
-score is_flush(mainjoueur *tiragecarte) {
-
-    score flush;
-    for (int i=0; i<5 ; i++) {
-        for (int j=0; j<5 ; j++) {
-            if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
-              strcpy(resultat.score, "UN FLUSH");
-              resultat.score = 90;
-            }
-
-
-        }
-
-
-    }
-
-    return resultat;
-}
 
 
 
-void comparermain(joueurs *mainjoueur) {
-is_straight_flush(mainjoueur *tiragecarte)
-}
+//void comparermain(joueurs *mainjoueur) {
+//is_straight_flush(mainjoueur *tiragecarte)
+//}
 
 
 int main() {
@@ -342,10 +324,10 @@ int main() {
     srand(seed); //commande random
 
     //for (int i = 0; i <5 ; i++) {
-        affichermain(generatehand());
+       // génerer plsrs mains
    // }
-   mainjoueur main = generatehand();
-   affichermain(main);
+
+   affichermain(tri(generatehand()));
 
 
 
