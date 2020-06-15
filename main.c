@@ -27,7 +27,7 @@ typedef struct score {
     char type[255];
     int score;
 }score;
-score resultat;
+
 
 typedef struct joueur {
     int numero;
@@ -192,30 +192,46 @@ int getrang(carte cartes) {
 /**************************Combinaisons*********************/
 
 score is_pair(mainjoueur *tiragecarte) {
-
+int cpt=0;
 
     score paire;
+    paire.score=0;
     for (int i = 0; i <5 ; i++) {
         for (int j = 0; j <5 ; j++) {               //analyse la main grâce au tri fait avant
-            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j+1].valeur){ //si la valeur de la carte est identique à celle d'après
-                strcpy(resultat.score, "PAIRE");
-                resultat.score = 20 ;
+            if (is_same_value(&tiragecarte->cartes[i],&tiragecarte->cartes[j])){ //si la valeur de la carte est identique à celle d'après
+                cpt++;
+                printf("%d", cpt);
 
             }
         }
     }
 
+if (cpt ==2){
+    printf("cpt 2");
+    strcpy(paire.type, "PAIRE");
+    paire.score = 20 ;
+}
 
-    return resultat;
+    return paire;
 }
 
 score is_two_pair(mainjoueur *tiragecarte) {
     score deuxpaires;
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j + 1].valeur) {
+            } else if (tiragecarte->cartes[i].valeur != tiragecarte->cartes[j + 1].valeur) {
+                strcpy(deuxpaires.type, "DOUBLE PAIRE");
+                deuxpaires.score = 40;
+
+            }
+
+        }
+
+    }
 
 
-    strcpy(resultat.score, "DOUBLE PAIRE");
-    resultat.score = 40;
-    return resultat;
+    return deuxpaires;
 }
 
 
@@ -227,9 +243,9 @@ score is_three_of_kind(mainjoueur *tiragecarte) {
         if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
             tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur)
 
-            strcpy(resultat.score, "BRELAN");
-        resultat.score = 50;
-        return resultat;
+            strcpy(brelan.type, "BRELAN");
+        brelan.score = 50;
+        return brelan;
     }
 }
 
@@ -245,10 +261,10 @@ score is_straight(mainjoueur *tiragecarte) {
     }
 
     if(cpt==5) {
-        strcpy(resultat.score, "SUITE");
-        resultat.score = 70;
+        strcpy(suite.type, "SUITE");
+        suite.score = 70;
     }
-    return resultat;
+    return suite;
 }
 
 
@@ -260,8 +276,8 @@ score is_flush(mainjoueur *tiragecarte) {
         for (int j=0; j<5 ; j++) {
             if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure
             == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
-                strcpy(resultat.score, "FLUSH");
-                resultat.score = 80;
+                strcpy(flush.score, "FLUSH");
+                flush.score = 80;
             }
 
 
@@ -269,21 +285,21 @@ score is_flush(mainjoueur *tiragecarte) {
 
     }
 
-    return resultat;
+    return flush;
 }
 
 score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
 
     score fullhouse;
 
-    if (resultat.score=="BRELAN"&&resultat.score=="DOUBLE PAIRE"){
+    if (fullhouse.score=="BRELAN"&&fullhouse.score=="DOUBLE PAIRE"){
 
-        strcpy(resultat.score, "FULL HOUSE");
-        resultat.score == 90;
+        strcpy(fullhouse.type, "FULL HOUSE");
+        fullhouse.score == 90;
     }
 
 
-    return resultat;
+    return fullhouse;
 }
 
 
@@ -297,8 +313,8 @@ score is_four_of_king(mainjoueur *tiragecarte) {
             tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur &&
             tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 3].valeur)
 
-            strcpy(resultat.score, "CARRE");
-            resultat.score = 120;
+            strcpy(carre.type, "CARRE");
+            carre.score = 120;
 
     }
 
@@ -308,7 +324,7 @@ score is_straight_flush(mainjoueur *tiragecarte) {
 
 
     score straight_flush;
-    return resultat;
+    return straight_flush;
 }
 
 
@@ -328,8 +344,11 @@ int main() {
    // }
 
    affichermain(tri(generatehand()));
+   mainjoueur mainjoueur1=tri((generatehand()));
 
-
+   //score resultat = is_pair(&mainjoueur1);
+   score resultat = is_two_pair(&mainjoueur1);
+   printf("\n score=%i", resultat.score);
 
 
     return 0;
