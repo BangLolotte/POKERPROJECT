@@ -203,6 +203,7 @@ int cpt=0;
             paire.score = 20 ;
             break; //on casse la boucle
         }
+
         for (int j = i+1; j <5 ; j++) {       //analyse la main grâce au tri fait avant
             if (is_same_value(&tiragecarte->cartes[i],&tiragecarte->cartes[j])){ //si la valeur de la carte est identique à celle d'après
                 cpt++;
@@ -218,16 +219,14 @@ int cpt=0;
 }
 
 score is_two_pair(mainjoueur *tiragecarte) {
+
     score deuxpaires;
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
-            if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[j + 1].valeur) {
-            } else if (tiragecarte->cartes[i].valeur != tiragecarte->cartes[j + 1].valeur) {
-                strcpy(deuxpaires.type, "DOUBLE PAIRE");
-                deuxpaires.score = 40;
-
-            }
-
+    deuxpaires.score=0;
+    for (int i = 0; i < 4 ; ++i) {
+        if (is_same_value(&tiragecarte->cartes[i], &tiragecarte->cartes[i + 1]) &&
+            is_same_value(&tiragecarte->cartes[i + 3], &tiragecarte->cartes[i + 4])) {
+            strcpy(deuxpaires.type, " DOUBLE PAIRE");
+            deuxpaires.score = 40;
         }
 
     }
@@ -239,14 +238,15 @@ score is_two_pair(mainjoueur *tiragecarte) {
 
 score is_three_of_kind(mainjoueur *tiragecarte) {
 
-
     score brelan;
+    brelan.score=0;
     for (int i = 0; i < 2; ++i) {
         if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
-            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur)
+            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur) {
 
             strcpy(brelan.type, "BRELAN");
-        brelan.score = 50;
+            brelan.score = 50;
+        }
         return brelan;
     }
 }
@@ -256,11 +256,15 @@ score is_straight(mainjoueur *tiragecarte) {
 
 
     score suite;
+    suite.score=0;
     int cpt=0;
+
     for (int i = 0; i <4 ; i++) {
         if (tiragecarte->cartes[i].valeur == 1+getrang(tiragecarte->cartes[i+1])) //si la carte = 1+ rang de la carte d'après
             cpt++; //cpteur s'incrémente
     }
+
+printf("cpt= %d",cpt);
 
     if(cpt==5) {
         strcpy(suite.type, "SUITE");
@@ -274,6 +278,7 @@ score is_flush(mainjoueur *tiragecarte) {
 
 
     score flush;
+    flush.score = 0;
     for (int i=0; i<5 ; i++) {
         for (int j=0; j<5 ; j++) {
             if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure
@@ -293,6 +298,7 @@ score is_flush(mainjoueur *tiragecarte) {
 score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
 
     score fullhouse;
+    fullhouse.score =0;
 
     if (fullhouse.score=="BRELAN"&&fullhouse.score=="DOUBLE PAIRE"){
 
@@ -307,18 +313,20 @@ score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la dou
 
 score is_four_of_king(mainjoueur *tiragecarte) {
 
-
     score carre;
+    carre.score=0;
 
     for (int i = 0; i < 2 ; ++i) {
         if (tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 1].valeur &&
             tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 2].valeur &&
-            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 3].valeur)
+            tiragecarte->cartes[i].valeur == tiragecarte->cartes[i + 3].valeur) {
+
 
             strcpy(carre.type, "CARRE");
             carre.score = 120;
-
+        }
     }
+    return carre;
 
 }
 
@@ -340,17 +348,22 @@ score is_straight_flush(mainjoueur *tiragecarte) {
 int main() {
     unsigned long seed = clock()+time(NULL)+getpid();
     srand(seed); //commande random
+//score resultat;
+//resultat.score=0;
 
-    //for (int i = 0; i <5 ; i++) {
-       // génerer plsrs mains
-   // }
+   // do{
+    for (int i = 0; i < 10; i++) {
 
-    mainjoueur mainjoueur1=tri((generatehand()));
-    affichermain(mainjoueur1);
 
-   score resultat = is_two_pair(&mainjoueur1);
-   //score resultat = is_three_of_kind(&mainjoueur1);
-   printf("\n score=%i", resultat.score);
+        mainjoueur mainjoueur1 = tri((generatehand()));
+        affichermain(mainjoueur1);
+
+        score resultat = is_straight(&mainjoueur1);
+
+        printf("\n score=%i", resultat.score);
+    }
+    //}
+   // while (resultat.score==0);
 
 
     return 0;
