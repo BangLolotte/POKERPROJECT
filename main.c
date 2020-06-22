@@ -198,12 +198,12 @@ int cpt=0;
     paire.score=0;
     for (int i = 0; i <5 ; i++) {
         if (cpt ==1){
-            printf("cpt 2");
+            //printf("cpt 2");
             strcpy(paire.type, "PAIRE");
             paire.score = 20 ;
             break; //on casse la boucle
         }
-        for (int j = i+1; j <5 ; j++) {//analyse la main grâce au tri fait avant
+        for (int j = i+1; j <5 ; j++) {       //analyse la main grâce au tri fait avant
             if (is_same_value(&tiragecarte->cartes[i],&tiragecarte->cartes[j])){ //si la valeur de la carte est identique à celle d'après
                 cpt++;
                 //printf("%d", cpt);
@@ -345,11 +345,11 @@ int main() {
        // génerer plsrs mains
    // }
 
-   affichermain(tri(generatehand()));
-   mainjoueur mainjoueur1=tri((generatehand()));
+    mainjoueur mainjoueur1=tri((generatehand()));
+    affichermain(mainjoueur1);
 
-   score resultat = is_pair(&mainjoueur1);
-   //score resultat = is_two_pair(&mainjoueur1);
+   score resultat = is_two_pair(&mainjoueur1);
+   //score resultat = is_three_of_kind(&mainjoueur1);
    printf("\n score=%i", resultat.score);
 
 
