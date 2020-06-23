@@ -78,7 +78,7 @@ score is_highcard(mainjoueur *); // absence de mains - score : 0
 
 score comparermain(joueurs *);
 
-void testcombinaisons(mainjoueur*);
+score testcombinaisons(mainjoueur*);
 
 
 
@@ -290,7 +290,7 @@ score is_flush(mainjoueur *tiragecarte) {
         for (int j=0; j<5 ; j++) {
             if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure
                 == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
-                strcpy(flush.score, "FLUSH");
+                strcpy(flush.type, "FLUSH");
                 flush.score = 80;
             }
 
@@ -302,12 +302,12 @@ score is_flush(mainjoueur *tiragecarte) {
     return flush;
 }
 
-score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
+/*score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la double paire
 
     score fullhouse;
     fullhouse.score =0;
 
-    if (fullhouse.score=="BRELAN"&&fullhouse.score=="DOUBLE PAIRE"){
+    if (fullhouse.score="BRELAN"&&fullhouse.score="DOUBLE PAIRE"){
 
         strcpy(fullhouse.type, "FULL HOUSE");
         fullhouse.score == 90;
@@ -317,7 +317,7 @@ score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la dou
     return fullhouse;
 }
 
-
+*/
 score is_four_of_king(mainjoueur *tiragecarte) {
 
     score carre;
@@ -370,26 +370,26 @@ score resultat;
                 if (resultat.score == 0) {
                     resultat = is_four_of_king(tiragecarte);
                 }
-                    if (resultat.score == 0); {
+                    if (resultat.score == 0) {
                         resultat = is_straight(tiragecarte);
                     }
                         if (resultat.score == 0) {
                             resultat = is_flush(tiragecarte);
                         }
-                            if (resultat.score == 0) {
-                                resultat = is_full_house(tiragecarte);
-                            }
+                           // if (resultat.score == 0) {
+                             //   resultat = is_full_house(tiragecarte);
+                           // }
                                 if (resultat.score==0){
                                     resultat = is_straight_flush(tiragecarte);
                                 }
-                                    if (resultat.score==0){
-                                        resultat = is_highcard(tiragecarte);
-                                    }
+                                   // if (resultat.score==0){
+                                      //  resultat = is_highcard(tiragecarte);
+                                   // }
 
-    printf("%d", resultat);
+    return resultat;
 }
 
-void comparermain(joueurs *js) {
+score comparermain(joueurs *js) {
 
 
     if (js->joueur[0].scorejoueur.score > js->joueur[1].scorejoueur.score){
@@ -398,7 +398,7 @@ void comparermain(joueurs *js) {
     if (js->joueur[0].scorejoueur.score == js ->joueur[1].scorejoueur.score){
         numgagnant =2;
     }
-    if (js->joueur[0].scorejoueur.score < jeu ->joueur[1].scorejoueur.score){
+    if (js->joueur[0].scorejoueur.score < js ->joueur[1].scorejoueur.score){
         numgagnant =3;
     }
 
@@ -411,32 +411,41 @@ int main() {
     unsigned long seed = clock()+time(NULL)+getpid();
     srand(seed); //commande random
 
-joueurs joueurs;
+
+    /*********instances crées*******/
+    joueurs joueurs;
 joueur premier;
 joueurs.joueur[0] = premier;
 
-joueur deuxième;
-joueurs.joueur[1]=deuxième;
+joueur deuxieme;
+joueurs.joueur[1]=deuxieme;
+
+
+    /***********Déroulement du jeu*************/
 
     mainjoueur mainjoueur1 = tri((generatehand()));
 
-    joueurs.joueur[0].main=mainjoueur1;
+    joueurs.joueur[0].main = mainjoueur1;
     printf("\nla main du joueur 1 est : ");
     affichermain(mainjoueur1);
-    testcombinaisons(&mainjoueur1);
+    joueurs.joueur[0].scorejoueur = testcombinaisons(&mainjoueur1);
+printf("%i", joueurs.joueur[0].scorejoueur);
+
+//printf("numgagnant = %d", numgagnant);
 
     mainjoueur mainjoueur2 = tri((generatehand()));
 
-    joueurs.joueur[1].main=mainjoueur2;
+    joueurs.joueur[1].main = mainjoueur2;
     printf("\nla main du joueur 2 est : ");
     affichermain(mainjoueur2);
-    testcombinaisons(&mainjoueur2);
+    joueurs.joueur[1].scorejoueur = testcombinaisons(&mainjoueur2);
 
 
+//comparermain(joueurs premier deuxieme)
 
 
-    if(numgagnant==1){
-        printf("\nLe joueur 1 gagne. %s est plus fort que %s", );
+    /*if(numgagnant==1){
+        printf("\nLe joueur 1 gagne. %s est plus fort que %s", premier.scorejoueur.type, deuxieme.scorejoueur.type );
     }
 
     if (numgagnant == 2) {
@@ -444,8 +453,9 @@ joueurs.joueur[1]=deuxième;
     }
 
     if (numgagnant == 3){
-        printf("\nLe joueur 2 gagne. %s est plus fort que %s")
+        printf("\nLe joueur 2 gagne. %s est plus fort que %s", deuxieme.scorejoueur.type, premier.scorejoueur.type);
     }
+     */
 
 
 
