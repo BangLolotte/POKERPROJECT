@@ -9,6 +9,7 @@
 char valeurs[]={'A','K','Q','J','T','9','8','7','6','5','4','3','2'};
 char figures[]={'C','D','H','S'}; //C=Trèfle H=Coeur D=Carreau  S=Pique
 
+int numgagnant ;
 /******************************Structures*********************************/
 typedef struct carte
 {
@@ -35,6 +36,7 @@ typedef struct joueur {
     mainjoueur main;
     bool gagnant;
 }joueur;
+
 
 
 typedef struct joueurs {
@@ -74,7 +76,12 @@ score is_pair(mainjoueur *); // une seule paire - score : 20
 score is_highcard(mainjoueur *); // absence de mains - score : 0
 
 
-void comparermain(joueurs *);
+score comparermain(joueurs *);
+
+void testcombinaisons(mainjoueur*);
+
+
+
 /*************************************Choix figures et valeurs******************************/
 char generatevalue() {
     int nb1= rand() %13;
@@ -106,15 +113,15 @@ bool is_same_value (carte * carte1, carte * carte2)
 bool testdoublons(carte*cartes, mainjoueur*tiragecarte) {
 
 
-int cpt=0;
+    int cpt=0;
 
     for (int i = 0; i < 5; i++) {
         if ((is_same_figure(cartes, &tiragecarte->cartes[i])) && (is_same_value(cartes, &tiragecarte->cartes[i]))) {
             cpt ++;
         }
-            if (cpt==2) {
-                return true;
-            }
+        if (cpt==2) {
+            return true;
+        }
     }
     return false;
 }
@@ -137,10 +144,10 @@ mainjoueur generatehand() {
             i--;
         }
 
-        }
+    }
 
     return tiragecarte;
-    }
+}
 
 
 /**************************Tri de la main du joueur************************/
@@ -161,10 +168,10 @@ mainjoueur tri(mainjoueur tirage) {
 /****************affichage de la main*****************/
 
 void affichermain(mainjoueur tiragecarte) {
-        printf("\nLa main du joueur est : ");
-        for (int i = 0; i < 5; i++) {
-            printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
-        }
+
+    for (int i = 0; i < 5; i++) {
+        printf("%c%c ", tiragecarte.cartes[i].valeur, tiragecarte.cartes[i].figure);
+    }
 }
 
 /****************************rang carte************************/
@@ -192,7 +199,7 @@ int getrang(carte cartes) {
 /**************************Combinaisons*********************/
 
 score is_pair(mainjoueur *tiragecarte) {
-int cpt=0;
+    int cpt=0;
 
     score paire;
     paire.score=0;
@@ -264,7 +271,7 @@ score is_straight(mainjoueur *tiragecarte) {
             cpt++; //cpteur s'incrémente
     }
 
-printf("cpt= %d",cpt);
+    printf("cpt= %d",cpt);
 
     if(cpt==5) {
         strcpy(suite.type, "SUITE");
@@ -282,7 +289,7 @@ score is_flush(mainjoueur *tiragecarte) {
     for (int i=0; i<5 ; i++) {
         for (int j=0; j<5 ; j++) {
             if (tiragecarte->cartes[i].figure == tiragecarte->cartes[j+1].figure == tiragecarte->cartes[j+2].figure
-            == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
+                == tiragecarte->cartes[j+3].figure == tiragecarte->cartes[j+4].figure){
                 strcpy(flush.score, "FLUSH");
                 flush.score = 80;
             }
@@ -332,38 +339,115 @@ score is_four_of_king(mainjoueur *tiragecarte) {
 
 score is_straight_flush(mainjoueur *tiragecarte) {
 
-
     score straight_flush;
+    straight_flush.score=0;
+    for (int i=0; i<5; ++i){
+        if (tiragecarte->cartes[i].figure == tiragecarte->cartes[i+1].figure &&
+            tiragecarte->cartes[i].figure == tiragecarte->cartes[i+2].figure &&
+            tiragecarte->cartes[i].figure == tiragecarte->cartes[i+3].figure &&
+            tiragecarte->cartes[i].figure == tiragecarte->cartes[i+4].figure) {
+            strcpy(straight_flush.type, "STRAIGHT FLUSH");
+            straight_flush.score = 200;
+        }
+    }
     return straight_flush;
 }
 
 
 
+score testcombinaisons(mainjoueur *tiragecarte) {
+score resultat;
 
-//void comparermain(joueurs *mainjoueur) {
-//is_straight_flush(mainjoueur *tiragecarte)
-//}
+    if (resultat.score == 0){
+    resultat = is_pair(tiragecarte);
+    }
+        if (resultat.score==0) {
+            resultat = is_two_pair(tiragecarte);
+        }
+            if (resultat.score==0){
+                resultat = is_three_of_kind(tiragecarte);
+            }
+                if (resultat.score == 0) {
+                    resultat = is_four_of_king(tiragecarte);
+                }
+                    if (resultat.score == 0); {
+                        resultat = is_straight(tiragecarte);
+                    }
+                        if (resultat.score == 0) {
+                            resultat = is_flush(tiragecarte);
+                        }
+                            if (resultat.score == 0) {
+                                resultat = is_full_house(tiragecarte);
+                            }
+                                if (resultat.score==0){
+                                    resultat = is_straight_flush(tiragecarte);
+                                }
+                                    if (resultat.score==0){
+                                        resultat = is_highcard(tiragecarte);
+                                    }
+
+    printf("%d", resultat);
+}
+
+void comparermain(joueurs *js) {
+
+
+    if (js->joueur[0].scorejoueur.score > js->joueur[1].scorejoueur.score){
+        numgagnant =1;
+    }
+    if (js->joueur[0].scorejoueur.score == js ->joueur[1].scorejoueur.score){
+        numgagnant =2;
+    }
+    if (js->joueur[0].scorejoueur.score < jeu ->joueur[1].scorejoueur.score){
+        numgagnant =3;
+    }
+
+
+}
+
 
 
 int main() {
     unsigned long seed = clock()+time(NULL)+getpid();
     srand(seed); //commande random
-//score resultat;
-//resultat.score=0;
 
-   // do{
-    for (int i = 0; i < 10; i++) {
+joueurs joueurs;
+joueur premier;
+joueurs.joueur[0] = premier;
+
+joueur deuxième;
+joueurs.joueur[1]=deuxième;
+
+    mainjoueur mainjoueur1 = tri((generatehand()));
+
+    joueurs.joueur[0].main=mainjoueur1;
+    printf("\nla main du joueur 1 est : ");
+    affichermain(mainjoueur1);
+    testcombinaisons(&mainjoueur1);
+
+    mainjoueur mainjoueur2 = tri((generatehand()));
+
+    joueurs.joueur[1].main=mainjoueur2;
+    printf("\nla main du joueur 2 est : ");
+    affichermain(mainjoueur2);
+    testcombinaisons(&mainjoueur2);
 
 
-        mainjoueur mainjoueur1 = tri((generatehand()));
-        affichermain(mainjoueur1);
 
-        score resultat = is_straight(&mainjoueur1);
 
-        printf("\n score=%i", resultat.score);
+    if(numgagnant==1){
+        printf("\nLe joueur 1 gagne. %s est plus fort que %s", );
     }
-    //}
-   // while (resultat.score==0);
+
+    if (numgagnant == 2) {
+        printf("\nEgalité");
+    }
+
+    if (numgagnant == 3){
+        printf("\nLe joueur 2 gagne. %s est plus fort que %s")
+    }
+
+
 
 
     return 0;
