@@ -382,13 +382,15 @@ score testcombinaisons(mainjoueur *tiragecarte) {
     //    resultat = is_highcard(tiragecarte);
     //}
 
-    printf("%d", resultat);
+    printf("%d", resultat.score);
 }
 
 void comparermain(joueurs *js) {
     joueur premier;
     joueur deuxieme;
 
+    printf("score joueur 0 (premier) %d", js->joueur[0].scorejoueur.score);
+    printf("score joueur 1 (deuxieme) %d", js->joueur[1].scorejoueur.score);
 
     if (js->joueur[0].scorejoueur.score > js->joueur[1].scorejoueur.score){
         premier.gagnant = true;
@@ -406,7 +408,9 @@ void comparermain(joueurs *js) {
         printf("\nLe joueur 2 gagne. %s est plus fort que %s", deuxieme.scorejoueur.type, premier.scorejoueur.type);
 
     }
-
+    if (premier.gagnant ==false && deuxieme.gagnant==false){
+        printf("\nErreur...");
+    }
 }
 
 
@@ -435,7 +439,7 @@ int main() {
     printf("\nla main du joueur 2 est : ");
     affichermain(mainjoueur2);
     testcombinaisons(&mainjoueur2);
-    //comparermain(&joueurs);
+    comparermain(&joueurs);
 
 
 
