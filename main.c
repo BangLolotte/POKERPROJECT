@@ -9,7 +9,7 @@
 char valeurs[]={'A','K','Q','J','T','9','8','7','6','5','4','3','2'};
 char figures[]={'C','D','H','S'}; //C=Trèfle H=Coeur D=Carreau  S=Pique
 
-int numgagnant ;
+
 /******************************Structures*********************************/
 typedef struct carte
 {
@@ -76,7 +76,7 @@ score is_pair(mainjoueur *); // une seule paire - score : 20
 score is_highcard(mainjoueur *); // absence de mains - score : 0
 
 
-score comparermain(joueurs *);
+void comparermain(joueurs *);
 
 score testcombinaisons(mainjoueur*);
 
@@ -232,7 +232,7 @@ score is_two_pair(mainjoueur *tiragecarte) {
     for (int i = 0; i < 4 ; ++i) {
         if (is_same_value(&tiragecarte->cartes[i], &tiragecarte->cartes[i + 1]) &&
             is_same_value(&tiragecarte->cartes[i + 3], &tiragecarte->cartes[i + 4])) {
-            strcpy(deuxpaires.type, " DOUBLE PAIRE");
+            strcpy(deuxpaires.type, "DOUBLE PAIRE");
             deuxpaires.score = 40;
         }
 
@@ -261,25 +261,21 @@ score is_three_of_kind(mainjoueur *tiragecarte) {
 
 score is_straight(mainjoueur *tiragecarte) {
 
-
     score suite;
-    suite.score=0;
-    int cpt=0;
+    suite.score = 0;
+    for (int i = 0; i < 4; ++i) {
+        if (getrang(tiragecarte->cartes[i + 4]) == 1 + getrang(tiragecarte->cartes[i + 3]) &&
+            getrang(tiragecarte->cartes[i + 3]) == 1 + getrang(tiragecarte->cartes[i + 2]) &&
+            getrang(tiragecarte->cartes[i + 2]) == 1 + getrang(tiragecarte->cartes[i + 1]) &&
+            getrang(tiragecarte->cartes[i + 1]) == 1 + getrang(tiragecarte->cartes[i])) {
+            strcpy(suite.type, "UNE SUITE");
+            suite.score = 70;
+        }
 
-    for (int i = 0; i <4 ; i++) {
-        if (tiragecarte->cartes[i].valeur == 1+getrang(tiragecarte->cartes[i+1])) //si la carte = 1+ rang de la carte d'après
-            cpt++; //cpteur s'incrémente
+        return suite;
+
     }
-
-    printf("cpt= %d",cpt);
-
-    if(cpt==5) {
-        strcpy(suite.type, "SUITE");
-        suite.score = 70;
-    }
-    return suite;
 }
-
 
 score is_flush(mainjoueur *tiragecarte) {
 
@@ -370,7 +366,7 @@ score testcombinaisons(mainjoueur *tiragecarte) {
     if (resultat.score == 0) {
         resultat = is_four_of_king(tiragecarte);
     }
-    if (resultat.score == 0); {
+    if (resultat.score == 0) {
         resultat = is_straight(tiragecarte);
     }
     if (resultat.score == 0) {
@@ -382,26 +378,34 @@ score testcombinaisons(mainjoueur *tiragecarte) {
     if (resultat.score==0){
         resultat = is_straight_flush(tiragecarte);
     }
-    if (resultat.score==0){
-        resultat = is_highcard(tiragecarte);
-    }
+   // if (resultat.score==0){
+    //    resultat = is_highcard(tiragecarte);
+    //}
 
     printf("%d", resultat);
 }
 
-score comparermain(joueurs *js) {
+void comparermain(joueurs *js) {
+    joueur premier;
+    joueur deuxieme;
 
 
     if (js->joueur[0].scorejoueur.score > js->joueur[1].scorejoueur.score){
-
+        premier.gagnant = true;
+        deuxieme.gagnant=false;
+        printf("\nLe joueur 1 gagne. %s est plus fort que %s", premier.scorejoueur.type, deuxieme.scorejoueur.type);
     }
     if (js->joueur[0].scorejoueur.score == js ->joueur[1].scorejoueur.score){
-        numgagnant =2;
+        premier.gagnant=true;
+        deuxieme.gagnant=true;
+        printf("\nEgalité");
     }
     if (js->joueur[0].scorejoueur.score < js ->joueur[1].scorejoueur.score){
-        numgagnant =3;
-    }
+        deuxieme.gagnant=true;
+        premier.gagnant=false;
+        printf("\nLe joueur 2 gagne. %s est plus fort que %s", deuxieme.scorejoueur.type, premier.scorejoueur.type);
 
+    }
 
 }
 
@@ -424,7 +428,6 @@ int main() {
     printf("\nla main du joueur 1 est : ");
     affichermain(mainjoueur1);
     testcombinaisons(&mainjoueur1);
-    comparermain(&joueurs);
 
     mainjoueur mainjoueur2 = tri((generatehand()));
 
@@ -432,28 +435,8 @@ int main() {
     printf("\nla main du joueur 2 est : ");
     affichermain(mainjoueur2);
     testcombinaisons(&mainjoueur2);
-    comparermain(&joueurs);
+    //comparermain(&joueurs);
 
-
-
-
-    if(numgagnant==1){
-        premier.gagnant = true;
-        deuxieme.gagnant=false;
-        printf("\nLe joueur 1 gagne. %s est plus fort que %s", premier.scorejoueur.type, deuxieme.scorejoueur.type);
-    }
-
-    if (numgagnant == 2) {
-        premier.gagnant=true;
-        deuxieme.gagnant=true;
-        printf("\nEgalité");
-    }
-
-    if (numgagnant == 3){
-        deuxieme.gagnant=true;
-        premier.gagnant=false;
-        printf("\nLe joueur 2 gagne. %s est plus fort que %s", deuxieme.scorejoueur.type, premier.scorejoueur.type);
-    }
 
 
 
