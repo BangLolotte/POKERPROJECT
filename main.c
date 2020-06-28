@@ -261,8 +261,9 @@ score is_three_of_kind(mainjoueur *tiragecarte) {
             strcpy(brelan.type, "BRELAN");
             brelan.score = 50;
         }
-        return brelan;
+
     }
+    return brelan;
 }
 
 
@@ -279,9 +280,10 @@ score is_straight(mainjoueur *tiragecarte) {
             suite.score = 70;
         }
 
-        return suite;
+
 
     }
+    return suite;
 }
 
 score is_flush(mainjoueur *tiragecarte) {
