@@ -239,7 +239,7 @@ score is_two_pair(mainjoueur *tiragecarte) {
         if (is_same_value(&tiragecarte->cartes[i], &tiragecarte->cartes[i + 1]) &&       //si la valeur de la 1ere carte et la 2e carte = valeur de la 3e et la 4e
             is_same_value(&tiragecarte->cartes[i + 3], &tiragecarte->cartes[i + 4]))
         {
-            strcpy(deuxpaires.type, "DOUBLE_PAIRE");
+            strcpy(deuxpaires.type, "DOUBLE PAIRE");
             deuxpaires.score = 40;
         }
 
@@ -311,7 +311,7 @@ score is_full_house(mainjoueur *tiragecarte) { //resultat du brelan et de la dou
     if (fullhouse.score == 40){
         is_three_of_kind(tiragecarte);
         if (fullhouse.score == 50) {
-            strcpy(fullhouse.type, "FULL_HOUSE");
+            strcpy(fullhouse.type, "FULL HOUSE");
             fullhouse.score = 90;
         }
     }
@@ -348,7 +348,7 @@ score is_straight_flush(mainjoueur *tiragecarte) {
         if (getrang(tiragecarte->cartes[i]) == 1+getrang(tiragecarte->cartes[i+1]) && getrang(tiragecarte->cartes[i+1]) == 1+getrang(tiragecarte->cartes[i+2]) && getrang(tiragecarte->cartes[i+2]) == 1+getrang(tiragecarte->cartes[i+3]) && getrang(tiragecarte->cartes[i+3]) == 1+getrang(tiragecarte->cartes[i+4])
             && (tiragecarte->cartes[i].figure == tiragecarte->cartes[i+1].figure && tiragecarte->cartes[i].figure == tiragecarte->cartes[i+2].figure && tiragecarte->cartes[i].figure == tiragecarte->cartes[i+3].figure && tiragecarte->cartes[i].figure == tiragecarte->cartes[i+4].figure)){
 
-            strcpy(suite_couleur.type, "QUINTE_FLUSH");
+            strcpy(suite_couleur.type, "QUINTE FLUSH");
             suite_couleur.score = 150;
         }
         else
@@ -372,13 +372,13 @@ score is_highcard(mainjoueur *tiragecarte){
     is_pair(tiragecarte);
 
     if (haute.score == 0){
-        strcpy(haute.type, "CARTE_HAUTE");
+        strcpy(haute.type, "CARTE HAUTE");
         haute.score = 10;
     }
     else {
-    printf("Erreur highcard");
+        printf("Erreur highcard");
     }
-   return haute;
+    return haute;
 }
 
 /*****************************Appel de toutes les combinaisons**********************************/
@@ -420,8 +420,9 @@ score testcombinaisons(mainjoueur *tiragecarte) {
     }
 
 
-   printf("%d", resultat.score);  // pour vérifications
-   return resultat;
+   printf("\nScore = %d", resultat.score);
+   printf("\n La combinaison est %s\n", resultat.type); // pour vérifications
+    return resultat;
 }
 
 
@@ -461,6 +462,7 @@ int main() {
     unsigned long seed = clock()+time(NULL)+getpid();
     srand(seed); //commande random
 
+
     joueurs joueurs;
     joueur premier;
 
@@ -484,7 +486,11 @@ int main() {
     testcombinaisons(&mainjoueur2); //appel des combinaisons pour le joueur 2
 
 
-  // comparermain(&joueurs); //comparaison des mains + détermination du résultat
+   comparermain(&joueurs); //comparaison des mains + détermination du résultat
 
+
+
+   // Si l'on met la comparermain(&joueurs) en commentaire, nous pouvons voir que le test de combinaison fonctionne avec le bon score, et le bon tyoe.
+   //Malheureusement, nous n'avons pas réussi à faire fonctionner le comparermain.
     return 0;
 }
